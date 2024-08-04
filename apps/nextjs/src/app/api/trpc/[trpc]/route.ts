@@ -1,7 +1,7 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
-import { appRouter, createTRPCContext } from "@acme/api";
-import { auth } from "@acme/auth";
+import { appRouter, createTRPCContext } from "@kochanet_pas/api";
+import { auth } from "@kochanet_pas/auth";
 
 // export const runtime = "edge";
 

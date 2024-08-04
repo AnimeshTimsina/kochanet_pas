@@ -1,5 +1,5 @@
-import baseConfig from "@acme/eslint-config/base";
-import reactConfig from "@acme/eslint-config/react";
+import baseConfig from "@kochanet_pas/eslint-config/base";
+import reactConfig from "@kochanet_pas/eslint-config/react";
 
 /** @type {import('typescript-eslint').Config} */
 export default [

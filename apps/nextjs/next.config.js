@@ -10,11 +10,11 @@ const config = {
 
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
-    "@acme/api",
-    "@acme/auth",
-    "@acme/db",
-    "@acme/ui",
-    "@acme/validators",
+    "@kochanet_pas/api",
+    "@kochanet_pas/auth",
+    "@kochanet_pas/db",
+    "@kochanet_pas/ui",
+    "@kochanet_pas/validators",
   ],
 
   /** We already do linting and typechecking as separate tasks in CI */

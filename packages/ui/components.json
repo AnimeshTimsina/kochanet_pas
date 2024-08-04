@@ -10,7 +10,7 @@
     "cssVariables": true
   },
   "aliases": {
-    "utils": "@acme/ui",
+    "utils": "@kochanet_pas/ui",
     "components": "src/",
     "ui": "src/"
   }

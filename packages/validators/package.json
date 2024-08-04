@@ -1,5 +1,5 @@
 {
-  "name": "@acme/validators",
+  "name": "@kochanet_pas/validators",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -22,12 +22,12 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:*",
-    "@acme/prettier-config": "workspace:*",
-    "@acme/tsconfig": "workspace:*",
+    "@kochanet_pas/eslint-config": "workspace:*",
+    "@kochanet_pas/prettier-config": "workspace:*",
+    "@kochanet_pas/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@kochanet_pas/prettier-config"
 }

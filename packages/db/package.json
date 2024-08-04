@@ -1,5 +1,5 @@
 {
-  "name": "@acme/db",
+  "name": "@kochanet_pas/db",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -33,14 +33,14 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:*",
-    "@acme/prettier-config": "workspace:*",
-    "@acme/tsconfig": "workspace:*",
+    "@kochanet_pas/eslint-config": "workspace:*",
+    "@kochanet_pas/prettier-config": "workspace:*",
+    "@kochanet_pas/tsconfig": "workspace:*",
     "dotenv-cli": "^7.4.2",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "prisma": "^5.15.1",
     "typescript": "catalog:"
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@kochanet_pas/prettier-config"
 }

@@ -12,4 +12,5 @@ export {
   invalidateSessionToken,
   validateToken,
   isSecureContext,
+  CREDENTIALS_PROVIDER
 } from "./config";

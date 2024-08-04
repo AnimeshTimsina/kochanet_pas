@@ -10,9 +10,9 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import type { Session } from "@acme/auth";
-import { auth, validateToken } from "@acme/auth";
-import { db } from "@acme/db";
+import type { Session } from "@kochanet_pas/auth";
+import { auth, validateToken } from "@kochanet_pas/auth";
+import { db } from "@kochanet_pas/db";
 
 /**
  * Isomorphic Session getter for API requests
@@ -49,7 +49,7 @@ export const createTRPCContext = async (opts: {
 
   return {
     session,
-    db,
+    db,  
     token: authToken,
   };
 };
