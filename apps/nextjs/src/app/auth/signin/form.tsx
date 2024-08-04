@@ -3,6 +3,9 @@
 import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
 
+import { Button } from "@kochanet_pas/ui/button";
+import { Input } from "@kochanet_pas/ui/input";
+
 import { signInSubmit } from "./submit";
 
 // import { signIn } from "@kochanet_pas/auth";
@@ -35,20 +38,29 @@ const SignInForm: React.FC = () => {
   };
   return (
     <form onSubmit={handleSubmit}>
-      <h1>Sign In</h1>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit">Sign In</button>
+      <div className="flex w-[500px] flex-col gap-2 px-4 py-4">
+        <h1 className="block">Sign In</h1>
+        <div>
+          <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div>
+          <Button type="submit">Sign In</Button>
+          {/* <button className="" type="submit">Sign In</button> */}
+        </div>
+      </div>
     </form>
   );
 };
