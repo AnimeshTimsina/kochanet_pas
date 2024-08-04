@@ -26,7 +26,7 @@ const adapter = PrismaAdapter(db);
 export const isSecureContext = env.NODE_ENV !== "development";
 
 export const CREDENTIALS_PROVIDER = CredentialsProvider({
-  name: "Credentials",
+  name: "Credentials Sign in",
   credentials: {
     email: { label: "Email", type: "email", placeholder: "name@example.com" },
     password: { label: "Password", type: "password" },
