@@ -47,10 +47,6 @@ catalogs:
 importers:
 
   .:
-    dependencies:
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
     devDependencies:
       '@kochanet_pas/prettier-config':
         specifier: workspace:*
@@ -58,9 +54,6 @@ importers:
       '@turbo/gen':
         specifier: ^2.0.8
         version: 2.0.11(@types/node@20.14.14)(typescript@5.5.4)
-      '@types/lodash':
-        specifier: ^4.17.7
-        version: 4.17.7
       prettier:
         specifier: 'catalog:'
         version: 3.3.3
@@ -383,6 +376,9 @@ importers:
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       next:
         specifier: ^14.2.4
         version: 14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

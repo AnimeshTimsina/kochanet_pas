@@ -26,13 +26,9 @@
   "devDependencies": {
     "@kochanet_pas/prettier-config": "workspace:*",
     "@turbo/gen": "^2.0.8",
-    "@types/lodash": "^4.17.7",
     "prettier": "catalog:",
     "turbo": "^2.0.8",
     "typescript": "catalog:"
   },
-  "prettier": "@kochanet_pas/prettier-config",
-  "dependencies": {
-    "lodash": "^4.17.21"
-  }
+  "prettier": "@kochanet_pas/prettier-config"
 }
