@@ -8,6 +8,7 @@ import SignInForm from "./form";
 
 const SignIn = async () => {
   const session = await auth();
+  console.log({ hasSession: !!session });
 
   if (session) {
     redirect("/");

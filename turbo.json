@@ -51,12 +51,12 @@
     }
   },
   "globalEnv": [
-    "DATABASE_URL",
     "AUTH_DISCORD_ID",
     "AUTH_DISCORD_SECRET",
     "AUTH_REDIRECT_PROXY_URL",
     "AUTH_SECRET",
-    "PORT"
+    "PORT",
+    "POSTGRES_PRISMA_URL"
   ],
   "globalPassThroughEnv": [
     "NODE_ENV",

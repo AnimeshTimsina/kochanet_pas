@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { signInSubmit } from "./submit";
 
@@ -9,15 +10,21 @@ import { signInSubmit } from "./submit";
 const SignInForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const params = useSearchParams();
+  const hasError = params.get("error");
+  const hasAlert = params.get("alert");
+  console.log({ hasError, hasAlert });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const res = await signInSubmit(email, password);
-    if (!res.success) {
-      alert(res.message);
+    const msg = await signInSubmit(email, password);
+    if (!msg.success) {
+      alert(msg.message);
     } else {
-      console.log("Successfully logged in");
+      console.log("Success");
     }
+    // console.error("EM", msg);
+
     // "use server";
     // await signIn("credentials", {
     //   email,

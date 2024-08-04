@@ -37,10 +37,21 @@ export const CREDENTIALS_PROVIDER = CredentialsProvider({
       throw new Error("No credentials provided");
     }
 
-    // const { email, password } = credentials as {
-    //   email: string;
-    //   password: string;
-    // };
+    const { email, password } = credentials as {
+      email: string;
+      password: string;
+    };
+    await new Promise((resolve) => setTimeout(resolve, 200));
+
+    if (email === "test@example.com" && password === "1234") {
+      return {
+        id: "asdas",
+        email,
+        name: "Test User",
+      };
+    } else {
+      throw new Error("No user found with the provided email");
+    }
 
     // // Fetch the user from the database using Prisma
     // const user = await db.user.findUnique({
@@ -85,6 +96,9 @@ export const authConfig = {
       }
     : {}),
   secret: env.AUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
   providers: [Discord, CREDENTIALS_PROVIDER],
 
   pages: {
@@ -96,20 +110,25 @@ export const authConfig = {
   },
   callbacks: {
     session: (opts) => {
-      if (!("user" in opts))
-        throw new Error("unreachable with session strategy");
-
+      // if (!("user" in opts))
+      //   throw new Error("unreachable with session strategy");
+      console.log("NA-OPTS", opts);
       return {
         ...opts.session,
         user: {
           ...opts.session.user,
-          id: opts.user.id,
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          id: opts.user?.id,
         },
       };
     },
     jwt: ({ token, user }) => {
-      if (user.id) {
+      console.log("NA_JWT", { token, user });
+      // eslint-disable-next-line @typescript-eslint/prefer-optional-chain, @typescript-eslint/no-unnecessary-condition
+      if (user && user.id) {
         token.id = user.id;
+        token.email = user.email;
+        token.name = user.name;
       }
       return token;
     },
