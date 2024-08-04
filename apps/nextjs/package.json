@@ -19,6 +19,7 @@
     "@kochanet_pas/db": "workspace:*",
     "@kochanet_pas/ui": "workspace:*",
     "@kochanet_pas/validators": "workspace:*",
+    "@kochanet_pas/const": "workspace:*",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/react-query": "catalog:",
     "@trpc/client": "catalog:",

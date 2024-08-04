@@ -3,12 +3,16 @@ import type {
   NextAuthConfig,
   Session as NextAuthSession,
 } from "next-auth";
+import type { JWT, JWTDecodeParams, JWTEncodeParams } from "next-auth/jwt";
+import type { NextRequest } from "next/server";
 import { skipCSRFCheck } from "@auth/core";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { decode, encode } from "next-auth/jwt";
 // import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 import Discord from "next-auth/providers/discord";
 
+import { AUTH_SESSION_KEY_NAME } from "@kochanet_pas/const";
 import { db } from "@kochanet_pas/db";
 
 import { env } from "../env";
@@ -24,6 +28,21 @@ declare module "next-auth" {
 const adapter = PrismaAdapter(db);
 
 export const isSecureContext = env.NODE_ENV !== "development";
+
+const customEncode = async (params: JWTEncodeParams<JWT>) => {
+  const jwt = await encode(params);
+  console.log("ENCRYPTION PARAMS", params);
+  console.log("Encoded JWT:", jwt); // Log the actual token
+  return jwt;
+};
+
+const customDecode = async (params: JWTDecodeParams) => {
+  const decoded = await decode(params);
+  console.log("DECRYPTION PARAMS", params);
+
+  console.log("DECODED", decoded);
+  return decoded;
+};
 
 export const CREDENTIALS_PROVIDER = CredentialsProvider({
   name: "Credentials Sign in",
@@ -86,68 +105,93 @@ export const CREDENTIALS_PROVIDER = CredentialsProvider({
   },
 });
 
-export const authConfig = {
-  adapter,
-  // In development, we need to skip checks to allow Expo to work
-  ...(!isSecureContext
-    ? {
-        skipCSRFCheck: skipCSRFCheck,
-        trustHost: true,
-      }
-    : {}),
-  secret: env.AUTH_SECRET,
-  session: {
-    strategy: "jwt",
-  },
-  providers: [Discord, CREDENTIALS_PROVIDER],
+export const getAuthConfig = (_req?: NextRequest) => {
+  return {
+    adapter,
+    // In development, we need to skip checks to allow Expo to work
+    ...(!isSecureContext
+      ? {
+          skipCSRFCheck: skipCSRFCheck,
+          trustHost: true,
+        }
+      : {}),
+    secret: env.AUTH_SECRET,
+    session: {
+      strategy: "jwt",
+    },
+    providers: [Discord, CREDENTIALS_PROVIDER],
 
-  pages: {
-    signIn: "/auth/signin",
-    signOut: "/auth/signout",
-    error: "/auth/error",
-    // verifyRequest: '/auth/verify-request',
-    newUser: "/auth/new-user",
-  },
-  callbacks: {
-    session: (opts) => {
-      // if (!("user" in opts))
-      //   throw new Error("unreachable with session strategy");
-      console.log("NA-OPTS", opts);
-      return {
-        ...opts.session,
-        user: {
-          ...opts.session.user,
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          id: opts.user?.id,
-        },
-      };
+    pages: {
+      signIn: "/auth/signin",
+      signOut: "/auth/signout",
+      error: "/auth/error",
+      // verifyRequest: '/auth/verify-request',
+      newUser: "/auth/new-user",
     },
-    jwt: ({ token, user }) => {
-      console.log("NA_JWT", { token, user });
-      // eslint-disable-next-line @typescript-eslint/prefer-optional-chain, @typescript-eslint/no-unnecessary-condition
-      if (user && user.id) {
-        token.id = user.id;
-        token.email = user.email;
-        token.name = user.name;
-      }
-      return token;
+
+    jwt: {
+      decode: customDecode,
+      encode: customEncode,
+      maxAge: 30 * 24 * 60 * 60, // 30 days
     },
-  },
-} satisfies NextAuthConfig;
+    callbacks: {
+      session: (opts) => {
+        // if (!("user" in opts))
+        //   throw new Error("unreachable with session strategy");
+        // console.log("NA-OPTS", opts);
+        return {
+          ...opts.session,
+          user: {
+            ...opts.session.user,
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            id: opts.user?.id,
+          },
+        };
+      },
+      jwt: ({ token, user }) => {
+        // console.log("NA_JWT", { token, user });
+        // eslint-disable-next-line @typescript-eslint/prefer-optional-chain, @typescript-eslint/no-unnecessary-condition
+        if (user && user.id) {
+          token.id = user.id;
+          token.email = user.email;
+          token.name = user.name;
+        }
+        console.log("MY TOKEN", token);
+        return token;
+      },
+    },
+  } satisfies NextAuthConfig;
+};
 
 export const validateToken = async (
   token: string,
 ): Promise<NextAuthSession | null> => {
   const sessionToken = token.slice("Bearer ".length);
-  const session = await adapter.getSessionAndUser?.(sessionToken);
-  return session
-    ? {
-        user: {
-          ...session.user,
-        },
-        expires: session.session.expires.toISOString(),
-      }
-    : null;
+
+  try {
+    const decodeForMe = await decode<JWT & { id: string }>({
+      token: sessionToken,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      secret: env.AUTH_SECRET!,
+      salt: AUTH_SESSION_KEY_NAME,
+    });
+
+    return decodeForMe
+      ? {
+          user: {
+            id: decodeForMe.id,
+            email: decodeForMe.email,
+            name: decodeForMe.name,
+          },
+          expires: decodeForMe.exp
+            ? new Date(decodeForMe.exp * 1000).toISOString()
+            : "",
+        }
+      : null;
+  } catch (err) {
+    console.error("VALIDATE ERROR", err);
+    throw err;
+  }
 };
 
 export const invalidateSessionToken = async (token: string) => {

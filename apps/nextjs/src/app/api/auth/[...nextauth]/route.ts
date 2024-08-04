@@ -2,11 +2,9 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 import { handlers, isSecureContext } from "@kochanet_pas/auth";
+import { AUTH_COOKIE_PATTERN, EXPO_COOKIE_NAME } from "@kochanet_pas/const";
 
 // export const runtime = "edge";
-
-const EXPO_COOKIE_NAME = "__acme-expo-redirect-state";
-const AUTH_COOKIE_PATTERN = /authjs\.session-token=([^;]+)/;
 
 /**
  * Noop in production.
@@ -41,8 +39,16 @@ export const GET = async (
   const nextauthAction = props.params.nextauth[0];
   const isExpoSignIn = req.nextUrl.searchParams.get("expo-redirect");
   const isExpoCallback = cookies().get(EXPO_COOKIE_NAME);
+  console.log("NEXT AUTH ACTION", {
+    nextauthAction,
+    isExpoCallback,
+    isExpoSignIn,
+  });
 
   if (nextauthAction === "signin" && !!isExpoSignIn) {
+    console.log("SIGNIN WITH EXPO", {
+      isExpoCallback,
+    });
     // set a cookie we can read in the callback
     // to know to send the user back to expo
     cookies().set({
@@ -54,6 +60,9 @@ export const GET = async (
   }
 
   if (nextauthAction === "callback" && !!isExpoCallback) {
+    console.log("CALLBACK WITH EXPO", {
+      isExpoCallback,
+    });
     cookies().delete(EXPO_COOKIE_NAME);
 
     // Run original handler, then extract the session token from the response
@@ -64,7 +73,7 @@ export const GET = async (
       .getSetCookie()
       .find((cookie) => AUTH_COOKIE_PATTERN.test(cookie));
     const match = setCookie?.match(AUTH_COOKIE_PATTERN)?.[1];
-
+    console.log("MATCH COOKIE", match);
     if (!match)
       throw new Error(
         "Unable to find session cookie: " +
@@ -72,7 +81,10 @@ export const GET = async (
       );
 
     const url = new URL(isExpoCallback.value);
+
     url.searchParams.set("session_token", match);
+    console.log("Redirecting to expo url", url);
+
     return NextResponse.redirect(url);
   }
 

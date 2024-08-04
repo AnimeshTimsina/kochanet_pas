@@ -15,6 +15,7 @@ const config = {
     "@kochanet_pas/db",
     "@kochanet_pas/ui",
     "@kochanet_pas/validators",
+    "@kochanet_pas/const",
   ],
 
   /** We already do linting and typechecking as separate tasks in CI */

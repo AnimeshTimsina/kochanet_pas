@@ -15,6 +15,7 @@ export const authRouter = {
     if (!opts.ctx.token) {
       return { success: false };
     }
+
     await invalidateSessionToken(opts.ctx.token);
     return { success: true };
   }),

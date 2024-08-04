@@ -1,0 +1,33 @@
+{
+  "name": "@kochanet_pas/const",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf .turbo dist node_modules",
+    "dev": "tsc",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "@kochanet_pas/tsconfig": "workspace:*",
+    "@kochanet_pas/eslint-config": "workspace:*",
+    "@kochanet_pas/prettier-config": "workspace:*"
+  },
+  "prettier": "@kochanet_pas/prettier-config"
+}

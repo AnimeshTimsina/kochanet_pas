@@ -107,7 +107,7 @@ function MobileAuth() {
       </Text>
       <Button
         onPress={() => (user ? signOut() : signIn())}
-        title={user ? "Sign Out" : "Sign In With Discord"}
+        title={user ? "Sign Out" : "Sign In With Credentials"}
         color={"#5B65E9"}
       />
     </>
@@ -115,13 +115,13 @@ function MobileAuth() {
 }
 
 export default function Index() {
-  const utils = api.useUtils();
+  // const utils = api.useUtils();
 
-  const postQuery = api.post.all.useQuery();
+  // const postQuery = api.post.all.useQuery();
 
-  const deletePostMutation = api.post.delete.useMutation({
-    onSettled: () => utils.post.all.invalidate(),
-  });
+  // const deletePostMutation = api.post.delete.useMutation({
+  //   onSettled: () => utils.post.all.invalidate(),
+  // });
 
   return (
     <SafeAreaView className="bg-background">
@@ -140,7 +140,7 @@ export default function Index() {
           </Text>
         </View>
 
-        <FlashList
+        {/* <FlashList
           data={postQuery.data}
           estimatedItemSize={20}
           ItemSeparatorComponent={() => <View className="h-2" />}
@@ -150,9 +150,9 @@ export default function Index() {
               onDelete={() => deletePostMutation.mutate(p.item.id)}
             />
           )}
-        />
+        /> */}
 
-        <CreatePost />
+        {/* <CreatePost /> */}
       </View>
     </SafeAreaView>
   );

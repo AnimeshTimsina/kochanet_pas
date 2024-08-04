@@ -39,4 +39,5 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     typedRoutes: true,
   },
   plugins: ["expo-router"],
+  jsEngine: "hermes",
 });

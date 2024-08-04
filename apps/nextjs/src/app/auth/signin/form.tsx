@@ -16,11 +16,19 @@ const SignInForm: React.FC = () => {
   const params = useSearchParams();
   const hasError = params.get("error");
   const hasAlert = params.get("alert");
+  const expoRedirectURL = params.get("expo-redirect");
   console.log({ hasError, hasAlert });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const msg = await signInSubmit(email, password);
+
+    const msg = await signInSubmit(
+      email,
+      password,
+      // expoRedirectURL ?? "/",
+      !!expoRedirectURL,
+    );
+
     if (!msg.success) {
       alert(msg.message);
     } else {

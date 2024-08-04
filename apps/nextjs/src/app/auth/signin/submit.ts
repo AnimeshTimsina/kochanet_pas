@@ -7,14 +7,20 @@ import { signIn } from "@kochanet_pas/auth";
 
 // import {} from ""
 
-export async function signInSubmit(email: string, password: string) {
+export async function signInSubmit(
+  email: string,
+  password: string,
+  fromExpo = false,
+) {
   try {
     await signIn("credentials", {
       email,
       password,
-      redirect: true,
-      redirectTo: "/",
+      redirect: !fromExpo,
+      // redirect: fromExpo ? false : true,
+      // redirectTo: fromExpo ? "/" : undefined,
     });
+    console.log("SIGNED IN");
     return { success: true, message: null };
   } catch (error) {
     const toReturn = { success: false, message: "" };

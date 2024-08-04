@@ -21,6 +21,7 @@
     "@auth/core": "0.32.0",
     "@auth/prisma-adapter": "^2.4.1",
     "@kochanet_pas/db": "workspace:*",
+    "@kochanet_pas/const": "workspace:*",
     "@t3-oss/env-nextjs": "^0.10.1",
     "bcryptjs": "^2.4.3",
     "lodash": "^4.17.21",
