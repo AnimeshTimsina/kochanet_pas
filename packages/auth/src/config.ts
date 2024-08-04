@@ -6,7 +6,6 @@ import type {
 import { skipCSRFCheck } from "@auth/core";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 // import bcrypt from "bcryptjs";
-import _ from "lodash";
 import CredentialsProvider from "next-auth/providers/credentials";
 import Discord from "next-auth/providers/discord";
 
@@ -33,7 +32,8 @@ export const CREDENTIALS_PROVIDER = CredentialsProvider({
     password: { label: "Password", type: "password" },
   },
   async authorize(credentials) {
-    if (_.isNil(credentials)) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!credentials) {
       throw new Error("No credentials provided");
     }
 
