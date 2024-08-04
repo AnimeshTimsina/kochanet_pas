@@ -18,6 +18,7 @@ export const env = createEnv({
    */
   server: {
     POSTGRES_PRISMA_URL: z.string().url(),
+    POSTGRES_PRISMA_URL_ACCELERATE: z.string().url(),
   },
 
   /**
