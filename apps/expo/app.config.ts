@@ -2,8 +2,8 @@ import type { ConfigContext, ExpoConfig } from "expo/config";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "expo",
-  slug: "expo",
+  name: "kochanetMobile",
+  slug: "kochanetMobile",
   scheme: "expo",
   version: "0.1.0",
   orientation: "portrait",
@@ -16,28 +16,32 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   updates: {
     fallbackToCacheTimeout: 0,
+    url: "https://u.expo.dev/17e06bea-d497-4740-9414-beb34f903b4e",
   },
   assetBundlePatterns: ["**/*"],
   ios: {
-    bundleIdentifier: "your.bundle.identifier",
+    bundleIdentifier: "com.animesh.kochanetPas",
     supportsTablet: true,
   },
   android: {
-    package: "your.bundle.identifier",
+    package: "com.animesh.kochanetPas",
     adaptiveIcon: {
       foregroundImage: "./assets/icon.png",
       backgroundColor: "#1F104A",
     },
   },
-  // extra: {
-  //   eas: {
-  //     projectId: "your-eas-project-id",
-  //   },
-  // },
+  extra: {
+    eas: {
+      projectId: "17e06bea-d497-4740-9414-beb34f903b4e",
+    },
+  },
   experiments: {
     tsconfigPaths: true,
     typedRoutes: true,
   },
   plugins: ["expo-router"],
   jsEngine: "hermes",
+  runtimeVersion: {
+    policy: "appVersion",
+  },
 });
