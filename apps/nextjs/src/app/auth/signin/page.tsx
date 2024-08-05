@@ -28,7 +28,13 @@ const SignIn = async () => {
     }
   }
 
-  return <SignInForm />;
+  return (
+    <div>
+      <div>{expoURL}</div>
+      <div>{sessionCookie}</div>
+      <SignInForm />;
+    </div>
+  );
 };
 
 export default SignIn;
