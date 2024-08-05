@@ -172,7 +172,9 @@ export const validateToken = async (
       token: sessionToken,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       secret: env.AUTH_SECRET!,
-      salt: AUTH_SESSION_KEY_NAME,
+      salt: isSecureContext
+        ? AUTH_SESSION_KEY_NAME
+        : `__Secure-${AUTH_SESSION_KEY_NAME}`,
     });
 
     return decodeForMe
