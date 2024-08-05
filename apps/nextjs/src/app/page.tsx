@@ -22,7 +22,7 @@ export default async function HomePage({
   // You can await this here if you don't want to show Suspense fallback below
   void api.post.all.prefetch();
   const expoURL = searchParams?.expoURL;
-  const sessionCookie = cookies().get(AUTH_SESSION_KEY_NAME)?.value;
+  const sessionCookie = cookies().get("__Secure-authjs.session-token")?.value;
 
   console.log("EXPO URL", expoURL);
   console.log("SESSION COOKIE", sessionCookie);
