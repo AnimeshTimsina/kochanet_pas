@@ -3,6 +3,7 @@ import type { ConfigContext, ExpoConfig } from "expo/config";
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: "kochanetMobile",
+
   slug: "kochanetMobile",
   scheme: "kochanetMobile",
   version: "0.1.0",
