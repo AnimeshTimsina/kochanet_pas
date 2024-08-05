@@ -1,5 +1,6 @@
 import { Button, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as Linking from "expo-linking";
 import { Stack } from "expo-router";
 
 // import { FlashList } from "@shopify/flash-list";
@@ -97,7 +98,7 @@ function MobileAuth() {
   const user = useUser();
   const signIn = useSignIn();
   const signOut = useSignOut();
-
+  const redirectTo = Linking.createURL("/login");
   return (
     <>
       <Text className="pb-2 text-center text-xl font-semibold text-white">
@@ -108,6 +109,7 @@ function MobileAuth() {
         title={user ? "Sign Out" : "Sign In With Credentials"}
         color={"#5B65E9"}
       />
+      <Text className="text-white">URL: {redirectTo}</Text>
     </>
   );
 }

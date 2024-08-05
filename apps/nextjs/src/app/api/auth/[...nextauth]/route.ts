@@ -43,6 +43,10 @@ export const GET = async (
   if (nextauthAction === "signin" && !!isExpoSignIn) {
     // set a cookie we can read in the callback
     // to know to send the user back to expo
+    console.log("EXPO SIGN IN", {
+      EXPO_COOKIE_NAME,
+      isExpoSignIn,
+    });
     cookies().set({
       name: EXPO_COOKIE_NAME,
       value: isExpoSignIn,
