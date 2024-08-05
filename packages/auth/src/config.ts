@@ -112,10 +112,7 @@ export const getAuthConfig = (_req?: NextRequest) => {
           skipCSRFCheck: skipCSRFCheck,
           trustHost: true,
         }
-      : {
-          skipCSRFCheck: skipCSRFCheck,
-          trustHost: true,
-        }),
+      : {}),
     secret: env.AUTH_SECRET,
     session: {
       strategy: "jwt",
