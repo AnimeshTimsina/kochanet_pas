@@ -113,7 +113,7 @@ export const getAuthConfig = (_req?: NextRequest) => {
           trustHost: true,
         }
       : {}),
-    secret: "bD91asdDYSTY8183bas@!#*Ebas",
+    secret: env.AUTH_SECRET,
     session: {
       strategy: "jwt",
     },
@@ -172,7 +172,7 @@ export const validateToken = async (
       token: sessionToken,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       secret: env.AUTH_SECRET!,
-      salt: isSecureContext
+      salt: !isSecureContext
         ? AUTH_SESSION_KEY_NAME
         : `__Secure-${AUTH_SESSION_KEY_NAME}`,
     });
