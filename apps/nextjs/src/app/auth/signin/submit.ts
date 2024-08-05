@@ -2,8 +2,10 @@
 
 import type { AuthError } from "@auth/core/errors";
 import { isRedirectError } from "next/dist/client/components/redirect";
+import { cookies } from "next/headers";
 
 import { signIn } from "@kochanet_pas/auth";
+import { AUTH_SESSION_KEY_NAME } from "@kochanet_pas/const";
 
 // import {} from ""
 
@@ -16,11 +18,12 @@ export async function signInSubmit(
     await signIn("credentials", {
       email,
       password,
-      redirect: !fromExpo,
-      // redirect: fromExpo ? false : true,
+      redirect: fromExpo ? false : true,
       // redirectTo: fromExpo ? "/" : undefined,
     });
-    console.log("SIGNED IN");
+    const sessionCookie = cookies().get(AUTH_SESSION_KEY_NAME)?.value;
+
+    console.log("SIGNED IN", sessionCookie);
     return { success: true, message: null };
   } catch (error) {
     const toReturn = { success: false, message: "" };

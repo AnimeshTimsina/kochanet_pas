@@ -10,7 +10,6 @@ import SignInForm from "./form";
 
 const SignIn = async () => {
   const session = await auth();
-  console.log({ hasSession: !!session });
 
   if (session) {
     const sessionCookie = cookies().get(AUTH_SESSION_KEY_NAME)?.value;

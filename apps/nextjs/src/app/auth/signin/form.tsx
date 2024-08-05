@@ -14,10 +14,8 @@ const SignInForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const params = useSearchParams();
-  const hasError = params.get("error");
-  const hasAlert = params.get("alert");
+
   const expoRedirectURL = params.get("expo-redirect");
-  console.log({ hasError, hasAlert });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
