@@ -8,14 +8,10 @@ import { TRPCProvider } from "~/utils/api";
 
 import "../styles.css";
 
-import { getToken } from "~/utils/session-store";
-
 // This is the main layout of the app
 // It wraps your pages with the providers they need
 export default function RootLayout() {
   const { colorScheme } = useColorScheme();
-  const token = getToken();
-  console.log("EUREKA", token);
 
   return (
     <TRPCProvider>
