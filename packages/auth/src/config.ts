@@ -31,16 +31,13 @@ export const isSecureContext = env.NODE_ENV !== "development";
 
 const customEncode = async (params: JWTEncodeParams<JWT>) => {
   const jwt = await encode(params);
-  console.log("ENCRYPTION PARAMS", params);
-  console.log("Encoded JWT:", jwt); // Log the actual token
+
   return jwt;
 };
 
 const customDecode = async (params: JWTDecodeParams) => {
   const decoded = await decode(params);
-  console.log("DECRYPTION PARAMS", params);
 
-  console.log("DECODED", decoded);
   return decoded;
 };
 
@@ -156,7 +153,6 @@ export const getAuthConfig = (_req?: NextRequest) => {
           token.email = user.email;
           token.name = user.name;
         }
-        console.log("MY TOKEN", token);
         return token;
       },
     },

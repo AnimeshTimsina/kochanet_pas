@@ -50,6 +50,11 @@ export const useSignOut = () => {
   return async () => {
     // const res = await signOut.mutateAsync();
     // if (!res.success) return;
+    const redirectTo = Linking.createURL("/");
+
+    const signOutURL = `${getBaseUrl()}/api/auth/signout?expoRedirect=${encodeURIComponent(redirectTo)}`;
+    await Browser.openAuthSessionAsync(`${signOutURL}?`, redirectTo);
+    Browser.dismissBrowser();
     await deleteToken();
     await utils.invalidate();
     router.replace("/");
