@@ -19,15 +19,12 @@ export const signIn = async () => {
   const sessionToken = String(url.queryParams?.session_token);
   if (!sessionToken) return;
 
-  console.log("Setting token", sessionToken);
-
   setToken(sessionToken);
   Browser.dismissBrowser(); // Close the browser
 };
 
 export const useUser = () => {
   const { data: session } = api.auth.getSession.useQuery();
-  console.log("Getting user session", session);
   return session?.user ?? null;
 };
 

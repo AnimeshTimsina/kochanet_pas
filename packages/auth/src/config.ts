@@ -136,9 +136,6 @@ export const getAuthConfig = (_req?: NextRequest) => {
 
     callbacks: {
       session: (opts) => {
-        // if (!("user" in opts))
-        //   throw new Error("unreachable with session strategy");
-        // console.log("NA-OPTS", opts);
         return {
           ...opts.session,
           user: {
@@ -149,7 +146,6 @@ export const getAuthConfig = (_req?: NextRequest) => {
         };
       },
       jwt: ({ token, user }) => {
-        // console.log("NA_JWT", { token, user });
         // eslint-disable-next-line @typescript-eslint/prefer-optional-chain, @typescript-eslint/no-unnecessary-condition
         if (user && user.id) {
           token.id = user.id;

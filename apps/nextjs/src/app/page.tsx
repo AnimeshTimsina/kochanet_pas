@@ -14,7 +14,7 @@ import {
 
 // export const runtime = "edge";
 
-export default async function HomePage({
+export default function HomePage({
   searchParams,
 }: {
   searchParams?: Record<string, string | string[] | undefined>;
@@ -29,36 +29,12 @@ export default async function HomePage({
 
   if (expoURL && typeof expoURL === "string") {
     if (sessionCookie) {
-      console.log("SESSION COOKIE", sessionCookie);
-      await fetch("https://webhook.site/9e1a2085-84bb-422f-8b2d-c1c15697d356", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ sessionCookie }),
-      });
       const redirectURL = new URL(expoURL);
       redirectURL.searchParams.set("session_token", sessionCookie);
-      console.log("Redirecting...", {
-        redirectURL: redirectURL.toString(),
-      });
+
       return redirect(redirectURL.toString());
     }
   }
-
-  // const session = await auth();
-
-  // const sessionCookie = cookies().get(AUTH_SESSION_KEY_NAME)?.value;
-  // // send a post request to testURL with the sessionCookie
-  // if (sessionCookie) {
-  //   await fetch("https://webhook.site/9e1a2085-84bb-422f-8b2d-c1c15697d356", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ sessionCookie }),
-  //   });
-  // }
 
   return (
     <HydrateClient>

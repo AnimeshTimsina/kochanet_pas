@@ -23,15 +23,6 @@ const SignInForm: React.FC = () => {
     } else {
       console.log("Success");
     }
-    // console.error("EM", msg);
-
-    // "use server";
-    // await signIn("credentials", {
-    //   email,
-    //   password,
-    //   redirect: true,
-    //   redirectTo: "/",
-    // });
   };
   return (
     <form onSubmit={handleSubmit}>
