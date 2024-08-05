@@ -113,7 +113,7 @@ export const getAuthConfig = (_req?: NextRequest) => {
           trustHost: true,
         }
       : {}),
-    secret: env.AUTH_SECRET,
+    secret: "bD91asdDYSTY8183bas@!#*Ebas",
     session: {
       strategy: "jwt",
     },
@@ -129,6 +129,7 @@ export const getAuthConfig = (_req?: NextRequest) => {
 
     jwt: {
       decode: customDecode,
+
       encode: customEncode,
       maxAge: 30 * 24 * 60 * 60, // 30 days
     },
