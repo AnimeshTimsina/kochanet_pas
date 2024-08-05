@@ -11,13 +11,17 @@ import SignInForm from "./form";
 const SignIn = async () => {
   const session = await auth();
   console.log({ hasSession: !!session });
+  const sessionCookie = cookies().get(AUTH_SESSION_KEY_NAME)?.value;
+  const expoURL = cookies().get(EXPO_COOKIE_NAME)?.value;
+  console.log({ sessionCookie, expoURL });
 
   if (session) {
-    const sessionCookie = cookies().get(AUTH_SESSION_KEY_NAME)?.value;
-    const expoURL = cookies().get(EXPO_COOKIE_NAME)?.value;
     if (expoURL && sessionCookie) {
       const redirectURL = new URL(expoURL);
       redirectURL.searchParams.set("session_token", sessionCookie);
+      console.log("Redirecting...", {
+        redirectURL: redirectURL.toString(),
+      });
       return redirect(redirectURL.toString());
     } else {
       redirect("/");
