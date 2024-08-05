@@ -105,20 +105,17 @@ export const CREDENTIALS_PROVIDER = CredentialsProvider({
 export const getAuthConfig = (_req?: NextRequest) => {
   return {
     adapter,
-    cookies: {
-      sessionToken: {
-        options: {
-          sameSite: "none",
-        },
-      },
-    },
+
     // In development, we need to skip checks to allow Expo to work
     ...(!isSecureContext
       ? {
           skipCSRFCheck: skipCSRFCheck,
           trustHost: true,
         }
-      : {}),
+      : {
+          skipCSRFCheck: skipCSRFCheck,
+          trustHost: true,
+        }),
     secret: env.AUTH_SECRET,
     session: {
       strategy: "jwt",

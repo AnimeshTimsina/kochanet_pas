@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 import { Button } from "@kochanet_pas/ui/button";
 import { Input } from "@kochanet_pas/ui/input";
@@ -13,19 +12,11 @@ import { signInSubmit } from "./submit";
 const SignInForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const params = useSearchParams();
-
-  const expoRedirectURL = params.get("expo-redirect");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const msg = await signInSubmit(
-      email,
-      password,
-      // expoRedirectURL ?? "/",
-      !!expoRedirectURL,
-    );
+    const msg = await signInSubmit(email, password);
 
     if (!msg.success) {
       alert(msg.message);
