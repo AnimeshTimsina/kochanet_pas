@@ -38,7 +38,9 @@ export const GET = async (
 
   const nextauthAction = props.params.nextauth[0];
   const isExpoSignIn = req.nextUrl.searchParams.get("expo-redirect");
-  const isExpoCallback = cookies().get(EXPO_COOKIE_NAME);
+  const isExpoCallback =
+    cookies().get(EXPO_COOKIE_NAME) ??
+    cookies().get(`__Secure-${EXPO_COOKIE_NAME}`);
 
   if (nextauthAction === "signin" && !!isExpoSignIn) {
     // set a cookie we can read in the callback

@@ -15,7 +15,9 @@ export async function signInSubmit(
   redirectURL: string,
 ) {
   try {
-    const expoURL = cookies().get(EXPO_COOKIE_NAME)?.value;
+    const expoURL =
+      cookies().get(EXPO_COOKIE_NAME)?.value ??
+      cookies().get(`__Secure-${EXPO_COOKIE_NAME}`)?.value;
     await signIn("credentials", {
       email,
       password,
