@@ -15,7 +15,7 @@ import { env } from "~/env";
 export const metadata: Metadata = {
   metadataBase: new URL(
     env.VERCEL_ENV === "production"
-      ? "https://turbo.t3.gg"
+      ? "https://kochanet-pas.vercel.app"
       : "http://localhost:3000",
   ),
   title: "Create T3 Turbo",
