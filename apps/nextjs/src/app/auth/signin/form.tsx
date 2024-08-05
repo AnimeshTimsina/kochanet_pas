@@ -16,7 +16,7 @@ const SignInForm: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const msg = await signInSubmit(email, password);
+    const msg = await signInSubmit(email, password, "/");
 
     if (!msg.success) {
       alert(msg.message);

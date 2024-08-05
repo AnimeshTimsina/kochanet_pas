@@ -2,18 +2,27 @@
 
 import type { AuthError } from "@auth/core/errors";
 import { isRedirectError } from "next/dist/client/components/redirect";
+import { cookies } from "next/headers";
 
 import { signIn } from "@kochanet_pas/auth";
+import { EXPO_COOKIE_NAME } from "@kochanet_pas/const";
 
 // import {} from ""
 
-export async function signInSubmit(email: string, password: string) {
+export async function signInSubmit(
+  email: string,
+  password: string,
+  redirectURL: string,
+) {
   try {
+    const expoURL = cookies().get(EXPO_COOKIE_NAME)?.value;
     await signIn("credentials", {
       email,
       password,
       redirect: true,
-      // redirectTo: fromExpo ? "/" : undefined,
+      redirectTo: expoURL
+        ? `${redirectURL}?expoURL=${encodeURIComponent(expoURL)}`
+        : redirectURL,
     });
 
     return { success: true, message: null };

