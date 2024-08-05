@@ -132,17 +132,7 @@ export const getAuthConfig = (_req?: NextRequest) => {
       encode: customEncode,
       maxAge: 30 * 24 * 60 * 60, // 30 days
     },
-    cookies: {
-      sessionToken: {
-        name: AUTH_SESSION_KEY_NAME,
-        options: {
-          httpOnly: true,
-          secure: false, // Ensure secure cookies in production
-          sameSite: "none", // or 'none' if you need cross-site cookies
-          path: "/",
-        },
-      },
-    },
+
     callbacks: {
       session: (opts) => {
         // if (!("user" in opts))
