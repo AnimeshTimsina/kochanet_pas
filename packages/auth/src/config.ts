@@ -7,8 +7,8 @@ import type { JWT, JWTDecodeParams, JWTEncodeParams } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { skipCSRFCheck } from "@auth/core";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import bcrypt from "bcryptjs";
 import { decode, encode } from "next-auth/jwt";
-// import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 import Discord from "next-auth/providers/discord";
 
@@ -57,48 +57,24 @@ export const CREDENTIALS_PROVIDER = CredentialsProvider({
       email: string;
       password: string;
     };
-    await new Promise((resolve) => setTimeout(resolve, 200));
-
-    if (email === "test@example.com" && password === "1234") {
-      return {
-        id: "asdas",
-        email,
-        name: "Test User",
-      };
-    } else {
-      throw new Error("No user found with the provided email");
+    // await new Promise((resolve) => setTimeout(resolve, 200));
+    const user = await db.user.findUnique({
+      where: { email: email },
+    });
+    if (!user) {
+      throw new Error("Invalid credentials");
+    }
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      throw new Error("Invalid credentials");
     }
 
-    // // Fetch the user from the database using Prisma
-    // const user = await db.user.findUnique({
-    //   where: { email: email },
-    // });
-    // set delay of 200ms
-    await new Promise((resolve) => setTimeout(resolve, 200));
     return {
-      id: "asdas",
-      email: "asd@asda.com",
-      name: "Hello User",
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      image: user.image,
     };
-
-    // if (!user) {
-    //   // return null;
-    //   throw new Error("No user found with the provided email");
-    // }
-
-    // // Compare the provided password with the stored hashed password
-    // const isValidPassword = await bcrypt.compare(password, user.password);
-
-    // if (!isValidPassword) {
-    //   // return null;
-    //   throw new Error("Invalid password");
-    // }
-
-    // return {
-    //   id: user.id,
-    //   email: user.email,
-    //   name: user.name,
-    // };
   },
 });
 
@@ -136,12 +112,13 @@ export const getAuthConfig = (_req?: NextRequest) => {
 
     callbacks: {
       session: (opts) => {
+        const _token = opts.token as JWT & { id: string };
         return {
           ...opts.session,
           user: {
             ...opts.session.user,
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            id: opts.user?.id,
+
+            id: _token.id,
           },
         };
       },
@@ -166,7 +143,7 @@ export const validateToken = async (
   try {
     const decodeForMe = await decode<JWT & { id: string }>({
       token: sessionToken,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
       secret: env.AUTH_SECRET!,
       salt: !isSecureContext
         ? AUTH_SESSION_KEY_NAME

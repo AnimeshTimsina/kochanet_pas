@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckIcon, HomeIcon } from "lucide-react";
+import { ArrowLeftIcon, CheckIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -21,43 +21,65 @@ import SectionTitle from "@kochanet_pas/ui/sectionTitle";
 import { Separator } from "@kochanet_pas/ui/separator";
 import { toast } from "@kochanet_pas/ui/toast";
 
-import { signInSubmit } from "./submit";
+import { api } from "~/trpc/react";
 
-const signinSchema = z.object({
+const registerSchema = z.object({
   email: z.string().email(),
-  password: z.string(),
+  password: z.string().min(8),
+  name: z.string().min(2),
+  imageURL: z.string().url().optional(),
 });
-type IFormValues = z.infer<typeof signinSchema>;
+type IFormValues = z.infer<typeof registerSchema>;
 
-const SigninForm = () => {
+const RegisterForm = () => {
   const form = useForm<IFormValues>({
-    resolver: zodResolver(signinSchema),
+    resolver: zodResolver(registerSchema),
     mode: "onChange",
   });
   const router = useRouter();
-  const [isPending, setIsPending] = useState(false);
 
-  async function onSubmit(data: IFormValues) {
-    setIsPending(true);
-    const msg = await signInSubmit(data.email, data.password, "/");
-    setIsPending(false);
+  const { mutate, isPending } = api.auth.registerUser.useMutation({
+    onSuccess: () => {
+      toast.success("Registered successully");
+      router.replace("/auth/signin");
+    },
+    onError: (err) => {
+      toast.error(err.message || "Failed to register");
+    },
+  });
 
-    if (!msg.success) {
-      toast.error(msg.message);
-    } else {
-      console.log("Success");
-    }
+  function onSubmit(data: IFormValues) {
+    mutate({
+      email: data.email,
+      name: data.name,
+      password: data.password,
+      image: data.imageURL,
+    });
   }
   return (
     <main className="container flex h-screen items-center justify-center px-4 py-4">
       <div className="flex w-screen max-w-sm flex-col items-center justify-center gap-6 rounded-sm border border-border px-6 py-10">
         <SectionTitle>
-          Sign in to <span className="text-primary">PAS</span>
+          Register <span className="text-primary">User</span>
         </SectionTitle>
         <Separator />
         <div className="w-full">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name*</FormLabel>
+                    <FormControl>
+                      <Input placeholder={"Enter name"} {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="email"
@@ -95,6 +117,20 @@ const SigninForm = () => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="imageURL"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Image URL</FormLabel>
+                    <FormControl>
+                      <Input placeholder={`https://`} {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <div className="flex flex-row justify-stretch gap-2">
                 <CustomButton
@@ -103,10 +139,10 @@ const SigninForm = () => {
                   variant={"outline"}
                   className="flex-1"
                   isLoading={false}
-                  Icon={<HomeIcon className="mr-1" size={16} />}
-                  title={"Go home"}
+                  Icon={<ArrowLeftIcon className="mr-1" size={18} />}
+                  title={"Go back"}
                   onClick={() => {
-                    router.replace("/");
+                    router.back();
                   }}
                 />
                 <CustomButton
@@ -115,7 +151,7 @@ const SigninForm = () => {
                   size={"lg"}
                   isLoading={isPending}
                   Icon={<CheckIcon className="mr-1" size={18} />}
-                  title={"Sign in"}
+                  title={"Register"}
                 />
               </div>
             </form>
@@ -126,4 +162,4 @@ const SigninForm = () => {
   );
 };
 
-export default SigninForm;
+export default RegisterForm;

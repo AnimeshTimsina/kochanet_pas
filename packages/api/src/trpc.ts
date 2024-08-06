@@ -119,3 +119,17 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
     },
   });
 });
+
+export const throwNotFoundError = (msg?: string) => {
+  throw new TRPCError({
+    code: "NOT_FOUND",
+    message: msg ?? "Not found",
+  });
+};
+
+export const throwUnauthorizedError = (msg?: string) => {
+  throw new TRPCError({
+    code: "FORBIDDEN",
+    message: msg ?? "Unauthorized",
+  });
+};

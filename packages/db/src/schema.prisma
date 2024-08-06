@@ -21,22 +21,28 @@ model Post {
 }
 
 model User {
-  id            String       @id @default(uuid())
-  name          String?
-  password      String
-  email         String?      @unique
-  emailVerified DateTime?
-  image         String?
-  Assessment    Assessment[]
-  Patient       Patient[]
+  id             String           @id @default(uuid())
+  name           String?
+  password       String
+  email          String?          @unique
+  emailVerified  DateTime?
+  image          String?
+  Assessment     Assessment[]
+  Patient        Patient[]
+  AssessmentType AssessmentType[]
+  Question       Question[]
 }
 
 model AssessmentType {
   id                String              @id @default(uuid())
-  name              String              @unique
+  name              String
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
+  uid               String
+  user              User                @relation(fields: [uid], references: [id], onDelete: Cascade)
   ApplicableMeasure ApplicableMeasure[]
+
+  @@unique([name, uid])
 }
 
 model ApplicableMeasure {
@@ -60,6 +66,7 @@ model Assessment {
   patient             Patient            @relation(fields: [patientId], references: [id], onDelete: Cascade)
   uid                 String
   user                User               @relation(fields: [uid], references: [id], onDelete: Cascade)
+  assessmentDate      DateTime           @default(now())
   createdAt           DateTime           @default(now())
   updatedAt           DateTime           @updatedAt
   AssessmentAnswer    AssessmentAnswer[]
@@ -85,6 +92,8 @@ model Question {
   questionType        QuestionType
   createdAt           DateTime          @default(now())
   updatedAt           DateTime          @updatedAt
+  uid                 String
+  user                User              @relation(fields: [uid], references: [id], onDelete: Cascade)
 
   QuestionOption   QuestionOption[]
   AssessmentAnswer AssessmentAnswer[]

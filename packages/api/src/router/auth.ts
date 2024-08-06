@@ -1,4 +1,6 @@
 import type { TRPCRouterRecord } from "@trpc/server";
+import { TRPCError } from "@trpc/server";
+import bcrypt from "bcryptjs";
 import { z } from "zod";
 
 import { invalidateSessionToken } from "@kochanet_pas/auth";
@@ -31,14 +33,30 @@ export const authRouter = {
     )
     .mutation(async ({ ctx, input }) => {
       const { db } = ctx;
-      const user = await db.user.create({
-        data: {
-          email: input.email,
-          password: input.password,
-          name: input.name,
-          image: input.image,
-        },
-      });
-      return user;
+      try {
+        const hashed = await bcrypt.hash(input.password, 10);
+        const user = await db.user.create({
+          data: {
+            email: input.email,
+            password: hashed,
+            name: input.name,
+            image: input.image,
+          },
+        });
+        return user;
+      } catch (err) {
+        const error = err as { code: string };
+        if (error.code === "P2002") {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Email already exists",
+          });
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Something went wrong",
+          });
+        }
+      }
     }),
 } satisfies TRPCRouterRecord;

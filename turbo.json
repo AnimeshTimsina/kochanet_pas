@@ -48,6 +48,10 @@
     "ui-add": {
       "cache": false,
       "interactive": true
+    },
+    "ui-add-latest": {
+      "cache": false,
+      "interactive": true
     }
   },
   "globalEnv": [

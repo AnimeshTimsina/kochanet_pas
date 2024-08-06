@@ -7,9 +7,6 @@ import { deleteCookie } from "./deleteCookie";
 const SignoutContainer: React.FC<{ redirectURL?: string }> = ({
   redirectURL,
 }) => {
-  //   const searchParams = useSearchParams();
-  //   const redirectURL = searchParams.get("expoRedirect");
-  //   console.log("Redirect URL", redirectURL);
   useEffect(() => {
     if (redirectURL) {
       deleteCookie(redirectURL);
