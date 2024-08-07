@@ -14,13 +14,14 @@ export const signIn = async () => {
     redirectTo,
   );
 
-  if (result.type !== "success") return;
+  if (result.type !== "success") return false;
   const url = Linking.parse(result.url);
   const sessionToken = String(url.queryParams?.session_token);
-  if (!sessionToken) return;
+  if (!sessionToken) return false;
 
   setToken(sessionToken);
   Browser.dismissBrowser(); // Close the browser
+  return true;
 };
 
 export const useUser = () => {
@@ -30,12 +31,12 @@ export const useUser = () => {
 
 export const useSignIn = () => {
   const utils = api.useUtils();
-  const router = useRouter();
 
   return async () => {
-    await signIn();
-    await utils.invalidate();
-    router.replace("/");
+    const success = await signIn();
+    if (success) {
+      await utils.invalidate();
+    }
   };
 };
 
@@ -50,10 +51,18 @@ export const useSignOut = () => {
     const redirectTo = Linking.createURL("/");
 
     const signOutURL = `${getBaseUrl()}/api/auth/signout?expoRedirect=${encodeURIComponent(redirectTo)}`;
-    await Browser.openAuthSessionAsync(`${signOutURL}?`, redirectTo);
-    Browser.dismissBrowser();
-    await deleteToken();
-    await utils.invalidate();
-    router.replace("/");
+    const { type } = await Browser.openAuthSessionAsync(
+      `${signOutURL}?`,
+      redirectTo,
+      {},
+    );
+    if (type === "success") {
+      Browser.dismissBrowser();
+      await deleteToken();
+      await utils.invalidate();
+      router.replace("/");
+    } else {
+      return;
+    }
   };
 };

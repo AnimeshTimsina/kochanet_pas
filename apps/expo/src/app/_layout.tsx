@@ -14,22 +14,29 @@ import {
 } from "@expo-google-fonts/manrope";
 import { ThemeProvider } from "@react-navigation/native";
 
+import { DrawerProvider } from "~/components/ui/popup";
+// import { DrawerProvider } from "~/components/ui/popup";
 import { NAV_THEME } from "~/lib/constants";
-import { useColorScheme } from "~/lib/useColorScheme";
 import { TRPCProvider } from "~/utils/api";
 
-const LIGHT_THEME: Theme = {
-  dark: false,
-  colors: NAV_THEME.light,
-};
+// const LIGHT_THEME: Theme = {
+//   dark: false,
+//   colors: NAV_THEME.light,
+// };
 const DARK_THEME: Theme = {
   dark: true,
   colors: NAV_THEME.dark,
 };
+
+export {
+  // Catch any errors thrown by the Layout component.
+  ErrorBoundary,
+} from "expo-router";
+
 void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const { isDarkColorScheme } = useColorScheme();
+  // const { isDarkColorScheme } = useColorScheme();
   const [fontsLoaded] = useFonts({
     Manrope_400Regular,
     Manrope_500Medium,
@@ -42,17 +49,28 @@ export default function RootLayout() {
       void SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <TRPCProvider>
       <ThemeProvider
         value={{
-          dark: isDarkColorScheme,
-          colors: isDarkColorScheme ? DARK_THEME.colors : LIGHT_THEME.colors,
+          dark: true,
+          colors: DARK_THEME.colors,
         }}
       >
-        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-        <Stack />
+        {/* <SnackbarProvider> */}
+        <DrawerProvider>
+          <StatusBar style={"light"} />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          />
+        </DrawerProvider>
+        {/* </SnackbarProvider> */}
       </ThemeProvider>
     </TRPCProvider>
   );

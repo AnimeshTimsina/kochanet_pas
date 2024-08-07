@@ -1,156 +1,44 @@
-import { Button, Text, View } from "react-native";
+import { useEffect } from "react";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import * as Linking from "expo-linking";
-import { Stack } from "expo-router";
+import { useRouter } from "expo-router";
 
-// import { FlashList } from "@shopify/flash-list";
-
-import { useSignIn, useSignOut, useUser } from "~/utils/auth";
-
-// function PostCard(props: {
-//   post: RouterOutputs["post"]["all"][number];
-//   onDelete: () => void;
-// }) {
-//   return (
-//     <View className="flex flex-row rounded-lg bg-muted p-4">
-//       <View className="flex-grow">
-//         <Link
-//           asChild
-//           href={{
-//             pathname: "/post/[id]",
-//             params: { id: props.post.id },
-//           }}
-//         >
-//           <Pressable className="">
-//             <Text className="text-xl font-semibold text-primary">
-//               {props.post.title}
-//             </Text>
-//             <Text className="mt-2 text-foreground">{props.post.content}</Text>
-//           </Pressable>
-//         </Link>
-//       </View>
-//       <Pressable onPress={props.onDelete}>
-//         <Text className="font-bold uppercase text-primary">Delete</Text>
-//       </Pressable>
-//     </View>
-//   );
-// }
-
-// function CreatePost() {
-//   const utils = api.useUtils();
-
-//   const [title, setTitle] = useState("");
-//   const [content, setContent] = useState("");
-
-//   const { mutate, error } = api.post.create.useMutation({
-//     async onSuccess() {
-//       setTitle("");
-//       setContent("");
-//       await utils.post.all.invalidate();
-//     },
-//   });
-
-//   return (
-//     <View className="mt-4 flex gap-2">
-//       <TextInput
-//         className="items-center rounded-md border border-input bg-background px-3 text-lg leading-[1.25] text-foreground"
-//         value={title}
-//         onChangeText={setTitle}
-//         placeholder="Title"
-//       />
-//       {error?.data?.zodError?.fieldErrors.title && (
-//         <Text className="mb-2 text-destructive">
-//           {error.data.zodError.fieldErrors.title}
-//         </Text>
-//       )}
-//       <TextInput
-//         className="items-center rounded-md border border-input bg-background px-3 text-lg leading-[1.25] text-foreground"
-//         value={content}
-//         onChangeText={setContent}
-//         placeholder="Content"
-//       />
-//       {error?.data?.zodError?.fieldErrors.content && (
-//         <Text className="mb-2 text-destructive">
-//           {error.data.zodError.fieldErrors.content}
-//         </Text>
-//       )}
-//       <Pressable
-//         className="flex items-center rounded bg-primary p-2"
-//         onPress={() => {
-//           mutate({
-//             title,
-//             content,
-//           });
-//         }}
-//       >
-//         <Text className="text-foreground">Create</Text>
-//       </Pressable>
-//       {error?.data?.code === "UNAUTHORIZED" && (
-//         <Text className="mt-2 text-destructive">
-//           You need to be logged in to create a post
-//         </Text>
-//       )}
-//     </View>
-//   );
-// }
-
-function MobileAuth() {
-  const user = useUser();
-  const signIn = useSignIn();
-  const signOut = useSignOut();
-  const redirectTo = Linking.createURL("/login");
-  return (
-    <>
-      <Text className="pb-2 text-center text-xl font-medium font-semibold text-white">
-        {user?.name ?? "Not logged in"}
-      </Text>
-      <Button
-        onPress={() => (user ? signOut() : signIn())}
-        title={user ? "Sign Out" : "Sign In With Credentials"}
-        color={"#5B65E9"}
-      />
-      <Text className="text-white">URL: {redirectTo}</Text>
-    </>
-  );
-}
+import { ArrowRightIcon } from "~/components/icons";
+import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
+import { useSignIn, useUser } from "~/utils/auth";
+import { getToken } from "~/utils/session-store";
 
 export default function Index() {
-  // const utils = api.useUtils();
+  const user = useUser();
+  const signIn = useSignIn();
 
-  // const postQuery = api.post.all.useQuery();
+  const router = useRouter();
+  useEffect(() => {
+    const token = getToken();
 
-  // const deletePostMutation = api.post.delete.useMutation({
-  //   onSettled: () => utils.post.all.invalidate(),
-  // });
+    if (token && user?.id) {
+      router.replace("/home");
+    }
+  }, [user?.id, router]);
 
   return (
-    <SafeAreaView className="bg-background">
-      {/* Changes page title visible on the header */}
-      <Stack.Screen options={{ title: "Home Page" }} />
-      <View className="h-full w-full bg-background p-4">
-        <Text className="font-fbold pb-2 text-center text-4xl font-bold text-foreground">
-          Create <Text className="text-primary">T3</Text> Turbo
-        </Text>
-
-        <MobileAuth />
-
-        <View className="py-2">
-          <Text className="font-fsemibold text-primary">Press on a post</Text>
+    <SafeAreaView>
+      <View className="h-full w-full items-center justify-center p-4 px-3 py-3">
+        <View className="flex flex-col items-center justify-center gap-6">
+          <View className="flex flex-row items-center">
+            <Text className="text-center text-4xl font-extrabold tracking-tight md:text-[5xl]">
+              Kochanet
+            </Text>
+            <Text className="text-4xl font-extrabold tracking-tight text-primary md:text-[5xl]">
+              PAS
+            </Text>
+          </View>
+          <Button variant={"default"} size="default" onPress={signIn}>
+            <Text className="font-fextrabold">Sign in</Text>
+            <ArrowRightIcon color={"#ffffff"} size={18} />
+          </Button>
         </View>
-
-        {/* <FlashList
-          data={postQuery.data}
-          estimatedItemSize={20}
-          ItemSeparatorComponent={() => <View className="h-2" />}
-          renderItem={(p) => (
-            <PostCard
-              post={p.item}
-              onDelete={() => deletePostMutation.mutate(p.item.id)}
-            />
-          )}
-        /> */}
-
-        {/* <CreatePost /> */}
       </View>
     </SafeAreaView>
   );

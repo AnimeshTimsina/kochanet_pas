@@ -1,13 +1,18 @@
 import { useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink, loggerLink } from "@trpc/client";
+import { useRouter } from "expo-router";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { httpBatchLink, loggerLink, TRPCClientError } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import superjson from "superjson";
 
 import type { AppRouter } from "@kochanet_pas/api";
 
 import { getBaseUrl } from "./base-url";
-import { getToken } from "./session-store";
+import { deleteToken, getToken } from "./session-store";
 
 /**
  * A set of typesafe hooks for consuming your API.
@@ -20,7 +25,37 @@ export { type RouterInputs, type RouterOutputs } from "@kochanet_pas/api";
  * Use only in _app.tsx
  */
 export function TRPCProvider(props: { children: React.ReactNode }) {
-  const [queryClient] = useState(() => new QueryClient());
+  const router = useRouter();
+  const onUnauthorizedError = async () => {
+    await deleteToken();
+    router.replace("/");
+  };
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          mutations: {
+            onError(error) {
+              console.error("Mutation Error", error);
+              if (error instanceof TRPCClientError) {
+                if (error.message === "Unauthorized") {
+                  void onUnauthorizedError();
+                }
+              }
+            },
+          },
+        },
+        queryCache: new QueryCache({
+          onError: (error) => {
+            if (error instanceof TRPCClientError) {
+              if (error.message === "Unauthorized") {
+                void onUnauthorizedError();
+              }
+            }
+          },
+        }),
+      }),
+  );
   const [trpcClient] = useState(() =>
     api.createClient({
       links: [
