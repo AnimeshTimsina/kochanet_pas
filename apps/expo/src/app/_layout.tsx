@@ -1,35 +1,38 @@
-import "@bacons/text-decoder/install";
-
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { useColorScheme } from "nativewind";
-
-import { TRPCProvider } from "~/utils/api";
-
 import "../styles.css";
 
-// This is the main layout of the app
-// It wraps your pages with the providers they need
+import type { Theme } from "@react-navigation/native";
+import * as React from "react";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { ThemeProvider } from "@react-navigation/native";
+
+import { NAV_THEME } from "~/lib/constants";
+import { useColorScheme } from "~/lib/useColorScheme";
+import { TRPCProvider } from "~/utils/api";
+
+const LIGHT_THEME: Theme = {
+  dark: false,
+  colors: NAV_THEME.light,
+};
+const DARK_THEME: Theme = {
+  dark: true,
+  colors: NAV_THEME.dark,
+};
+
 export default function RootLayout() {
-  const { colorScheme } = useColorScheme();
+  const { isDarkColorScheme } = useColorScheme();
 
   return (
     <TRPCProvider>
-      {/*
-          The Stack component displays the current page.
-          It also allows you to configure your screens
-        */}
-      <Stack
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: "#f472b6",
-          },
-          contentStyle: {
-            backgroundColor: colorScheme == "dark" ? "#09090B" : "#FFFFFF",
-          },
+      <ThemeProvider
+        value={{
+          dark: isDarkColorScheme,
+          colors: isDarkColorScheme ? DARK_THEME.colors : LIGHT_THEME.colors,
         }}
-      />
-      <StatusBar />
+      >
+        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+        <Stack />
+      </ThemeProvider>
     </TRPCProvider>
   );
 }
