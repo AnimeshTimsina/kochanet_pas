@@ -71,6 +71,7 @@ export default tseslint.config(
       ],
       "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/require-await": "off",
+      "@typescript-eslint/unbound-method": "off",
       "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
     },
   },

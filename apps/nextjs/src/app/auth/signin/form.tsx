@@ -69,6 +69,7 @@ const SigninForm = () => {
                         required
                         placeholder={`name@example.com`}
                         {...field}
+                        autoCapitalize="none"
                       />
                     </FormControl>
 
