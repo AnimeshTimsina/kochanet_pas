@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ArrowRightIcon, CheckIcon, ChevronLeftIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 
@@ -9,8 +10,11 @@ import { cn } from "@kochanet_pas/ui";
 import { Button } from "@kochanet_pas/ui/button";
 import { Card } from "@kochanet_pas/ui/card";
 import { Separator } from "@kochanet_pas/ui/separator";
+import Spinner from "@kochanet_pas/ui/spinner";
+import { toast } from "@kochanet_pas/ui/toast";
 
 import NoDataAlert from "~/app/_components/noDataAlert";
+import { api } from "~/trpc/react";
 import Description from "./description";
 import Indicator from "./indicator";
 import SelectBox from "./selectBox";
@@ -42,7 +46,7 @@ const ConductAssessmentForm: React.FC<IProps> = ({ data }) => {
   });
   const [showAll, setShowAll] = useState(false);
   const MAX_RESULTS = 5;
-
+  const router = useRouter();
   const value = form.watch();
   const questions = data.applicableMeasure.Question;
   const firstPage = value.pageNumber === 1;
@@ -67,6 +71,30 @@ const ConductAssessmentForm: React.FC<IProps> = ({ data }) => {
   const numberOfCorrectAnswers = data.applicableMeasure.Question.filter((q) =>
     isCorrect(q.id),
   ).length;
+
+  const { mutate: saveAnswers, isPending } =
+    api.assessment.saveAnswers.useMutation({
+      onSuccess: () => {
+        toast.success("Answers saved successfully");
+        router.replace("/assessments");
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+  const submit = () => {
+    saveAnswers({
+      assessmentId: data.id,
+      answers: Object.entries(value.answers)
+        .map(([questionId, optionIds]) =>
+          optionIds.map((optionId) => ({
+            questionId,
+            questionOptionId: optionId,
+          })),
+        )
+        .flat(),
+    });
+  };
 
   if (!questions.length) {
     return (
@@ -245,13 +273,20 @@ const ConductAssessmentForm: React.FC<IProps> = ({ data }) => {
           onClick={() => {
             if (lastPage) {
               console.log("Submit", value.answers);
+              submit();
             } else {
               form.setValue("pageNumber", value.pageNumber + 1);
             }
           }}
         >
-          {lastPage ? <CheckIcon size={18} className="mr-2" /> : <></>}
-          {lastPage ? "Print" : secondLastPage ? "Finish" : "Continue"}
+          {isPending ? (
+            <Spinner className="mr-2 animate-spin" />
+          ) : lastPage ? (
+            <CheckIcon size={18} className="mr-2" />
+          ) : (
+            <></>
+          )}
+          {lastPage ? "Save" : secondLastPage ? "Finish" : "Continue"}
           {!lastPage ? <ArrowRightIcon size={18} className="ml-2" /> : <></>}
         </Button>
       </div>

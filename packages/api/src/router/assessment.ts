@@ -162,6 +162,13 @@ export const assessmentRouter = {
     )
     .mutation(async ({ ctx, input }) => {
       const { db } = ctx;
+      // Removing old answers
+      await db.assessmentAnswer.deleteMany({
+        where: {
+          assessmentId: input.assessmentId,
+        },
+      });
+
       const answers = await db.assessmentAnswer.createMany({
         data: input.answers.map((answer) => ({
           assessmentId: input.assessmentId,
