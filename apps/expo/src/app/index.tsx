@@ -101,7 +101,7 @@ function MobileAuth() {
   const redirectTo = Linking.createURL("/login");
   return (
     <>
-      <Text className="pb-2 text-center text-xl font-semibold text-white">
+      <Text className="pb-2 text-center text-xl font-medium font-semibold text-white">
         {user?.name ?? "Not logged in"}
       </Text>
       <Button
@@ -128,16 +128,14 @@ export default function Index() {
       {/* Changes page title visible on the header */}
       <Stack.Screen options={{ title: "Home Page" }} />
       <View className="h-full w-full bg-background p-4">
-        <Text className="pb-2 text-center text-5xl font-bold text-foreground">
+        <Text className="font-fbold pb-2 text-center text-4xl font-bold text-foreground">
           Create <Text className="text-primary">T3</Text> Turbo
         </Text>
 
         <MobileAuth />
 
         <View className="py-2">
-          <Text className="font-semibold italic text-primary">
-            Press on a post
-          </Text>
+          <Text className="font-fsemibold text-primary">Press on a post</Text>
         </View>
 
         {/* <FlashList
