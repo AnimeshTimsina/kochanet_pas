@@ -55,6 +55,7 @@ export const assessmentRouter = {
               },
             },
           },
+          patient: true,
         },
       });
       if (!assessment) {
@@ -100,7 +101,7 @@ export const assessmentRouter = {
       ).length;
       const numberOfQuestions = formatted.applicableMeasure.Question.length;
 
-      return { ...formatted, score, numberOfQuestions };
+      return { ...formatted, score, numberOfQuestions, answers };
     }),
   typesAndMeasures: protectedProcedure.query(async ({ ctx }) => {
     const { db, session } = ctx;

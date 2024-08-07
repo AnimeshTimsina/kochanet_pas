@@ -25,6 +25,14 @@ const config = {
   experimental: {
     serverComponentsExternalPackages: ["pg"],
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
 };
 
 export default config;

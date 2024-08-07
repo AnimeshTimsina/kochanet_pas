@@ -30,9 +30,10 @@ const AddEdit: React.FC = () => {
   const { data: allTypes, isLoading: typesLoading } =
     api.assessmentType.all.useQuery();
   const { mutate, isPending } = api.assessment.createAssessment.useMutation({
-    onSuccess: async () => {
+    onSuccess: async (newRes) => {
       toast.success("Added successfully");
       router.refresh();
+      router.push(`/assessments/${newRes.id}`);
       closePopup();
     },
     onError: (err) => {
@@ -154,7 +155,7 @@ const AddEdit: React.FC = () => {
               type="submit"
               isLoading={isPending}
               Icon={<CheckIcon className="mr-1" size={18} />}
-              title={"Save"}
+              title={"Save and Start"}
             />
           </div>
         </form>
