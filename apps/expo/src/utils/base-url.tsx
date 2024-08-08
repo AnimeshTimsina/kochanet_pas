@@ -18,10 +18,6 @@ export const getBaseUrl = () => {
 
   if (!localhost) {
     return "https://kochanet-pas.vercel.app";
-    // return "https://turbo.t3.gg";
-    // throw new Error(
-    //   "Failed to get localhost. Please point to your production server.",
-    // );
   }
   // return "https://kochanet-pas.vercel.app";
   return `http://${localhost}:3000`;

@@ -4,7 +4,6 @@ import * as React from "react";
 import { LogOutIcon } from "lucide-react";
 
 import type { Session } from "@kochanet_pas/auth";
-import { signOut } from "@kochanet_pas/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@kochanet_pas/ui/avatar";
 import { Button } from "@kochanet_pas/ui/button";
 import {
