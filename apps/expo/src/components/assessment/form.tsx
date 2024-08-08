@@ -286,7 +286,6 @@ const AssessmentForm: React.FC<IProps> = ({ data }) => {
               size={"lg"}
               onPress={() => {
                 if (lastPage) {
-                  console.log("Submit", value.answers);
                   submit();
                 } else {
                   form.setValue("pageNumber", value.pageNumber + 1);

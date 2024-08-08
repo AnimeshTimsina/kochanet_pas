@@ -7,7 +7,7 @@ import { Button } from "@kochanet_pas/ui/button";
 
 import { getSessionOrRedirectToHome } from "~/actions";
 import { api } from "~/trpc/server";
-import NoDataAlert from "../_components/noDataAlert";
+import NoDataAlert from "../../_components/noDataAlert";
 import AddNewAssessment from "./addAssessment";
 import AssessmentsCard from "./assessmentCard";
 

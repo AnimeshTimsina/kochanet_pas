@@ -41,7 +41,7 @@ const SigninForm = () => {
     setIsPending(true);
     const msg = await signInSubmit(data.email, data.password, "/");
     setIsPending(false);
-
+    if (!msg) return;
     if (!msg.success) {
       toast.error(msg.message);
     } else {

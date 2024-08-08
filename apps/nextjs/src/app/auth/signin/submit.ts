@@ -27,7 +27,7 @@ export async function signInSubmit(
         : redirectURL,
     });
 
-    return { success: true, message: null };
+    // return { success: true, message: null };
   } catch (error) {
     const toReturn = { success: false, message: "" };
     console.error("ER", error);

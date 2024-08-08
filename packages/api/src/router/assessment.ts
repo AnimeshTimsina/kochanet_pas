@@ -125,7 +125,6 @@ export const assessmentRouter = {
     )
     .mutation(async ({ ctx, input }) => {
       const { db, session } = ctx;
-      console.log({ uid: session.user.id });
       if (!input.patientId && !input.newPatientName) {
         throw new Error("Patient ID or Name is required");
       }

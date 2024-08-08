@@ -23,7 +23,7 @@ const Navbar: React.FC<INavbarProps> = ({
         {content ? (
           content
         ) : (
-          <div className="x ml-2 flex flex-col">
+          <div className="-ml-3 flex flex-col">
             <div className="text-xl font-medium text-primary">
               {title ?? ""}
             </div>

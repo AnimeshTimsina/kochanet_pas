@@ -272,7 +272,6 @@ const ConductAssessmentForm: React.FC<IProps> = ({ data }) => {
           size={"lg"}
           onClick={() => {
             if (lastPage) {
-              console.log("Submit", value.answers);
               submit();
             } else {
               form.setValue("pageNumber", value.pageNumber + 1);

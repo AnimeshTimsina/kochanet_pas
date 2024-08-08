@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { MenuIcon } from "lucide-react";
 
 import type { Session } from "@kochanet_pas/auth";
 import { Button } from "@kochanet_pas/ui/button";
@@ -22,6 +23,14 @@ const Sidebar = ({
 }) => {
   const pathname = usePathname();
   const router = useRouter();
+  const existingState = localStorage.getItem("sidebarState");
+  const [isClosed, setIsClosed] = useState(
+    existingState === "closed" ? true : false,
+  );
+  const toggleSidebar = () => {
+    setIsClosed(!isClosed);
+    localStorage.setItem("sidebarState", isClosed ? "open" : "closed");
+  };
 
   const isActive = (name: string) => pathname.includes(name);
 
@@ -31,16 +40,27 @@ const Sidebar = ({
   };
   return (
     <div className="flex h-screen flex-row overflow-hidden">
-      <div className="w-52">
+      <div className={isClosed ? "w-24" : "w-52"}>
         <div className="flex min-h-0 flex-1 flex-col">
           <div className="flex flex-1 flex-col justify-between overflow-y-auto pt-5">
-            <div className="flex flex-col gap-12">
-              <div className="flex flex-shrink-0 items-center justify-center px-4">
-                <h1 className="text-center text-2xl font-extrabold tracking-tight">
-                  Kochanet <span className="text-primary">PAS</span>
-                </h1>
+            <div className="relative flex flex-col gap-12">
+              <Button
+                variant={"ghost"}
+                onClick={toggleSidebar}
+                className="absolute left-4 top-0"
+              >
+                <MenuIcon />
+              </Button>
+              <div className="flex items-center justify-center gap-1 px-4">
+                {isClosed ? (
+                  <div></div>
+                ) : (
+                  <h1 className="blocktext-center text-2xl font-extrabold tracking-tight">
+                    K <span className="text-primary">PAS</span>
+                  </h1>
+                )}
               </div>
-              <nav className="flex-1 space-y-1 px-5">
+              <nav className="flex flex-1 flex-col gap-2 px-5">
                 {routes.map((item) => (
                   <Button
                     key={item.name}
@@ -56,7 +76,7 @@ const Sidebar = ({
                       className={classNames("mr-3 h-4 w-4 flex-shrink-0")}
                       aria-hidden="true"
                     />
-                    {item.name}
+                    {isClosed ? "" : item.name}
                   </Button>
                 ))}
               </nav>
