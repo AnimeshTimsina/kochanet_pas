@@ -77,6 +77,7 @@ export const CREDENTIALS_PROVIDER = CredentialsProvider({
     };
   },
 });
+const MAX_AGE = 30 * 24 * 60 * 60;
 
 export const getAuthConfig = (_req?: NextRequest) => {
   return {
@@ -92,6 +93,7 @@ export const getAuthConfig = (_req?: NextRequest) => {
     secret: env.AUTH_SECRET,
     session: {
       strategy: "jwt",
+      maxAge: MAX_AGE,
     },
     providers: [Discord, CREDENTIALS_PROVIDER],
 
@@ -107,7 +109,7 @@ export const getAuthConfig = (_req?: NextRequest) => {
       decode: customDecode,
 
       encode: customEncode,
-      maxAge: 30 * 24 * 60 * 60, // 30 days
+      maxAge: MAX_AGE, // 30 days
     },
 
     callbacks: {
