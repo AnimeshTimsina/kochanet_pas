@@ -6,7 +6,7 @@ import { getInitials } from "@kochanet_pas/utils";
 
 import { useUser } from "~/utils/auth";
 import LogoutButton from "~/utils/logout";
-import { Text } from "./ui/text";
+import { Text } from "./text";
 
 export const LeftSection = () => {
   const user = useUser();

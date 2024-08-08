@@ -6,6 +6,7 @@ import {
   CameraIcon,
   Check,
   CheckCircle,
+  CheckCircleIcon,
   CheckIcon,
   ChevronDown,
   ChevronLeftIcon,
@@ -14,6 +15,8 @@ import {
   ChevronRightIcon,
   ChevronUp,
   CircleCheckIcon,
+  CircleDotIcon,
+  CircleIcon,
   CircleXIcon,
   ClipboardIcon,
   FileIcon,
@@ -25,6 +28,7 @@ import {
   LogOutIcon,
   MessageCircleMoreIcon,
   MoonIcon,
+  PlusCircleIcon,
   RefreshCcwIcon,
   SaveIcon,
   SettingsIcon,
@@ -85,6 +89,10 @@ interopIcon(ClipboardIcon);
 interopIcon(SettingsIcon);
 interopIcon(ArrowRightIcon);
 interopIcon(ChevronRightCircleIcon);
+interopIcon(PlusCircleIcon);
+interopIcon(CircleIcon);
+interopIcon(CircleDotIcon);
+interopIcon(CheckCircleIcon);
 
 export {
   AlertCircle,
@@ -122,4 +130,8 @@ export {
   SettingsIcon,
   ArrowRightIcon,
   ChevronRightCircleIcon,
+  PlusCircleIcon,
+  CircleIcon,
+  CircleDotIcon,
+  CheckCircleIcon,
 };

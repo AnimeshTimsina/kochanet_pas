@@ -2,19 +2,23 @@ import React from "react";
 import { View, VirtualizedList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+// import { useRouter } from "expo-router";
+
+import AddNewAssessment from "~/components/assessment/addNewButton";
+import AssessmentCard from "~/components/assessment/assessmentCard";
 import { ArrowRightIcon } from "~/components/icons";
-import TopHeader from "~/components/topHeader";
-import AssessmentCard from "~/components/ui/assessmentCard";
 import { Button } from "~/components/ui/button";
 import { EmptyData } from "~/components/ui/emptyData";
 import Spinner from "~/components/ui/spinner";
 import { Text } from "~/components/ui/text";
+import TopHeader from "~/components/ui/userHeader";
 import { api } from "~/utils/api";
 import { useUser } from "~/utils/auth";
 
 const Assessments = () => {
   const user = useUser();
   const NUMBER_OF_ASSESSMENTS = 3;
+  // const router = useRouter();
 
   const { data, isLoading, refetch, isRefetching } =
     api.assessment.all.useQuery(
@@ -65,9 +69,9 @@ const Assessments = () => {
                 onRefresh={refetch}
                 refreshing={isRefetching}
               />
+              <AddNewAssessment />
             </View>
           )}
-          {/* <Spinner className="text-primary" /> */}
         </View>
       </View>
     </SafeAreaView>

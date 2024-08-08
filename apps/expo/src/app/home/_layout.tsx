@@ -17,7 +17,7 @@ const TabLayout = () => {
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: COLORS.PRIMARY,
-          lazy: false,
+          lazy: true,
           headerShown: false,
         }}
       >
@@ -50,6 +50,13 @@ const TabLayout = () => {
             title: "Settings",
             tabBarIcon: ({ color }) => <SettingsIcon size={26} color={color} />,
             unmountOnBlur: false,
+          }}
+        />
+        <Tabs.Screen
+          name="[id]"
+          options={{
+            href: null,
+            tabBarShowLabel: true,
           }}
         />
       </Tabs>

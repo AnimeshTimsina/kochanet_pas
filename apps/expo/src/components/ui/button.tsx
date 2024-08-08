@@ -22,6 +22,7 @@ const buttonVariants = cva(
         ghost:
           "web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent",
         link: "web:underline-offset-4 web:hover:underline web:focus:underline",
+        black: "border-1 border border-primary bg-black text-white",
       },
       size: {
         default: "native:h-12 native:px-5 native:py-3 h-10 px-4 py-2",
@@ -51,6 +52,7 @@ const buttonTextVariants = cva(
           "text-secondary-foreground group-active:text-secondary-foreground",
         ghost: "group-active:text-accent-foreground",
         link: "text-primary group-active:underline",
+        black: "text-primary",
       },
       size: {
         default: "",

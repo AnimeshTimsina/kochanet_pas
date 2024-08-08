@@ -20,7 +20,8 @@ const Text = React.forwardRef<TextRef, SlottableTextProps>(
           "web:select-text font-fmedium text-base",
           textClass,
           className,
-          className?.includes("text-primary")
+          className?.includes("text-primary") ||
+            className?.includes("text-muted-foreground")
             ? ""
             : "text-foreground dark:text-white",
         )}

@@ -30,7 +30,7 @@ export const assessmentRouter = {
           },
         },
         orderBy: {
-          createdAt: "desc",
+          updatedAt: "desc",
         },
         take: input?.take,
       });

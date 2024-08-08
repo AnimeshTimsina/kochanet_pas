@@ -48,7 +48,7 @@ const useLogoutPrompt = () => {
 const LogoutButton = () => {
   const { open } = useLogoutPrompt();
   return (
-    <Button variant={"outline"} size="sm" onPress={open}>
+    <Button variant={"black"} size="sm" onPress={open}>
       <Text>Logout</Text>
     </Button>
   );

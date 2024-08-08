@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Pressable, View } from "react-native";
+import { useRouter } from "expo-router";
 
 import type { RouterOutputs } from "@kochanet_pas/api";
 
@@ -12,8 +15,16 @@ interface IProps {
 }
 
 const AssessmentCard: React.FC<IProps> = ({ assessment }) => {
+  const router = useRouter();
   return (
-    <Pressable className="w-full rounded-lg border bg-white px-3 py-3 text-card-foreground shadow-sm dark:bg-gray-900">
+    <Pressable
+      onPress={() => {
+        router.push({
+          pathname: ("/home" + `/${assessment.id}`) as any,
+        });
+      }}
+      className="w-full rounded-lg border bg-white px-3 py-3 text-card-foreground shadow-sm dark:bg-gray-900"
+    >
       <View className="flex flex-row items-center justify-between gap-3">
         <View className="flex flex-1 flex-row items-center gap-3 rounded-full bg-primary/10 px-4 py-2 dark:bg-primary/20">
           <Text className="text-md block font-bold text-primary">

@@ -2,6 +2,7 @@ import "../styles.css";
 
 import type { Theme } from "@react-navigation/native";
 import * as React from "react";
+import Toast from "react-native-toast-message";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -61,7 +62,6 @@ export default function RootLayout() {
           colors: DARK_THEME.colors,
         }}
       >
-        {/* <SnackbarProvider> */}
         <DrawerProvider>
           <StatusBar style={"light"} />
           <Stack
@@ -70,7 +70,7 @@ export default function RootLayout() {
             }}
           />
         </DrawerProvider>
-        {/* </SnackbarProvider> */}
+        <Toast autoHide visibilityTime={2000} position="top" />
       </ThemeProvider>
     </TRPCProvider>
   );
