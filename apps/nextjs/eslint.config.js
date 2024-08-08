@@ -1,4 +1,6 @@
-import baseConfig, { restrictEnvAccess } from "@kochanet_pas/eslint-config/base";
+import baseConfig, {
+  restrictEnvAccess,
+} from "@kochanet_pas/eslint-config/base";
 import nextjsConfig from "@kochanet_pas/eslint-config/nextjs";
 import reactConfig from "@kochanet_pas/eslint-config/react";
 
