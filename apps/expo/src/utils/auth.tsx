@@ -20,7 +20,7 @@ export const signIn = async () => {
   if (!sessionToken) return false;
 
   setToken(sessionToken);
-  Browser.dismissBrowser(); // Close the browser
+  Browser.dismissBrowser();
   return true;
 };
 
@@ -41,13 +41,9 @@ export const useSignIn = () => {
 };
 
 export const useSignOut = () => {
-  const utils = api.useUtils();
-  // const signOut = api.auth.signOut.useMutation();
   const router = useRouter();
 
   return async () => {
-    // const res = await signOut.mutateAsync();
-    // if (!res.success) return;
     const redirectTo = Linking.createURL("/");
 
     const signOutURL = `${getBaseUrl()}/api/auth/signout?expoRedirect=${encodeURIComponent(redirectTo)}`;
@@ -59,7 +55,7 @@ export const useSignOut = () => {
     if (type === "success") {
       Browser.dismissBrowser();
       await deleteToken();
-      await utils.invalidate();
+
       router.replace("/");
     } else {
       return;

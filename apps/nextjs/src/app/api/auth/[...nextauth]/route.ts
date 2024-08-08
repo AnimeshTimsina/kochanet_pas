@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 import { handlers, isSecureContext } from "@kochanet_pas/auth";
-import { AUTH_COOKIE_PATTERN, EXPO_COOKIE_NAME } from "@kochanet_pas/const";
+import { EXPO_COOKIE_NAME } from "@kochanet_pas/const";
 
 // export const runtime = "edge";
 
@@ -38,9 +38,9 @@ export const GET = async (
 
   const nextauthAction = props.params.nextauth[0];
   const isExpoSignIn = req.nextUrl.searchParams.get("expo-redirect");
-  const isExpoCallback =
-    cookies().get(EXPO_COOKIE_NAME) ??
-    cookies().get(`__Secure-${EXPO_COOKIE_NAME}`);
+  // const isExpoCallback =
+  //   cookies().get(EXPO_COOKIE_NAME) ??
+  //   cookies().get(`__Secure-${EXPO_COOKIE_NAME}`);
 
   if (nextauthAction === "signin" && !!isExpoSignIn) {
     cookies().set({
@@ -51,29 +51,29 @@ export const GET = async (
     });
   }
 
-  if (nextauthAction === "callback" && !!isExpoCallback) {
-    cookies().delete(EXPO_COOKIE_NAME);
+  // if (nextauthAction === "callback" && !!isExpoCallback) {
+  //   cookies().delete(EXPO_COOKIE_NAME);
 
-    // Run original handler, then extract the session token from the response
-    // Send it back via a query param in the Expo deep link. The Expo app
-    // will then get that and set it in the session storage.
-    const authResponse = await handlers.GET(req);
-    const setCookie = authResponse.headers
-      .getSetCookie()
-      .find((cookie) => AUTH_COOKIE_PATTERN.test(cookie));
-    const match = setCookie?.match(AUTH_COOKIE_PATTERN)?.[1];
-    if (!match)
-      throw new Error(
-        "Unable to find session cookie: " +
-          JSON.stringify(authResponse.headers.getSetCookie()),
-      );
+  //   // Run original handler, then extract the session token from the response
+  //   // Send it back via a query param in the Expo deep link. The Expo app
+  //   // will then get that and set it in the session storage.
+  //   const authResponse = await handlers.GET(req);
+  //   const setCookie = authResponse.headers
+  //     .getSetCookie()
+  //     .find((cookie) => AUTH_COOKIE_PATTERN.test(cookie));
+  //   const match = setCookie?.match(AUTH_COOKIE_PATTERN)?.[1];
+  //   if (!match)
+  //     throw new Error(
+  //       "Unable to find session cookie: " +
+  //         JSON.stringify(authResponse.headers.getSetCookie()),
+  //     );
 
-    const url = new URL(isExpoCallback.value);
+  //   const url = new URL(isExpoCallback.value);
 
-    url.searchParams.set("session_token", match);
+  //   url.searchParams.set("session_token", match);
 
-    return NextResponse.redirect(url);
-  }
+  //   return NextResponse.redirect(url);
+  // }
 
   // Every other request just calls the default handler
   return handlers.GET(req);

@@ -9,7 +9,6 @@ const Signout = () => {
   const expoURL =
     cookies().get(EXPO_COOKIE_NAME)?.value ??
     cookies().get(`__Secure-${EXPO_COOKIE_NAME}`)?.value;
-
   return <SignoutContainer redirectURL={expoURL} />;
 };
 
